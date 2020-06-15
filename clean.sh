@@ -9,7 +9,7 @@ jq '
   .panels[] |= if .id == 7 then .datasource = "${DS_BIGQUERY}" else . end |
   .title = "Google Cloud Billing Costs" |
   .__inputs |= . + [({} | .name = "VAR_DATASET" | .type = "constant" | .label = "Dataset containing billing export (Format: $project.$dataset)")] |
-  del(.uid, .version) |
+  .version? |= .+1 |
   del(.__inputs[]|select(.name == "DS_STACKDRIVER")) |
   del(.__requires[]|select(.type == "datasource" and .id == "stackdriver"))' raw.json > dashboard.json
 
